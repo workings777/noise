@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시디즈 소음 응대 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0ede8;
+    --border: #e0dbd3;
+    --text: #1a1816;
+    --text2: #6b6560;
+    --text3: #9e9890;
+    --blue: #1a56db;
+    --blue-light: #e8f0fe;
+    --blue-mid: #b8d0fc;
+    --teal: #0f766e;
+    --teal-light: #e0f7f5;
+    --amber: #b45309;
+    --amber-light: #fef3c7;
+    --red: #b91c1c;
+    --red-light: #fee2e2;
+    --green: #15803d;
+    --green-light: #dcfce7;
+    --purple: #6d28d9;
+    --purple-light: #ede9fe;
+    --accent: #1a56db;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* ── 헤더 ── */
+  .header {
+    background: var(--text);
+    color: white;
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--blue);
+  }
+  .header-left h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .header-left p {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .header-tabs {
+    display: flex;
+    gap: 4px;
+  }
+  .tab-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all .2s;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+  }
+
+  /* ── 레이아웃 ── */
+  .layout {
+    display: flex;
+    min-height: calc(100vh - 73px);
+  }
+
+  /* ── 사이드바 ── */
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 73px;
+    height: calc(100vh - 73px);
+    overflow-y: auto;
+  }
+  .sidebar-section {
+    padding: 0 16px;
+    margin-bottom: 8px;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    padding: 0 4px;
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text2);
+    transition: all .15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .sidebar-item:hover { background: var(--bg); color: var(--text); }
+  .sidebar-item.active { background: var(--blue-light); color: var(--blue); font-weight: 500; }
+  .sidebar-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-blue { background: var(--blue); }
+  .dot-teal { background: var(--teal); }
+  .dot-amber { background: var(--amber); }
+  .dot-purple { background: var(--purple); }
+  .dot-red { background: var(--red); }
+  .dot-green { background: var(--green); }
+  .sidebar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 12px 16px;
+  }
+
+  /* ── 메인 콘텐츠 ── */
+  .main {
+    flex: 1;
+    padding: 32px 40px;
+    overflow-y: auto;
+  }
+
+  /* ── 섹션 ── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-blue { background: var(--blue-light); }
+  .icon-teal { background: var(--teal-light); }
+  .icon-amber { background: var(--amber-light); }
+  .icon-purple { background: var(--purple-light); }
+  .icon-red { background: var(--red-light); }
+  .icon-green { background: var(--green-light); }
+
+  .section-title h2 { font-size: 20px; font-weight: 700; }
+  .section-title p { font-size: 13px; color: var(--text2); margin-top: 2px; }
+
+  /* ── 카드 ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .badge-blue { background: var(--blue-light); color: var(--blue); }
+  .badge-teal { background: var(--teal-light); color: var(--teal); }
+  .badge-amber { background: var(--amber-light); color: var(--amber); }
+  .badge-red { background: var(--red-light); color: var(--red); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-purple { background: var(--purple-light); color: var(--purple); }
+
+  /* ── 스크립트 박스 ── */
+  .script-box {
+    background: #f8f7f4;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.8;
+    position: relative;
+  }
+  .script-box.teal { border-left-color: var(--teal); }
+  .script-box.amber { border-left-color: var(--amber); }
+  .script-box.green { border-left-color: var(--green); }
+  .script-box.red { border-left-color: var(--red); }
+  .script-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .script-copy {
+    position: absolute;
+    top: 10px; right: 12px;
+    background: var(--border);
+    border: none;
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    color: var(--text2);
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all .15s;
+  }
+  .script-copy:hover { background: var(--blue); color: white; }
+
+  /* ── 테이블 ── */
+  .guide-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 12px 0;
+  }
+  .guide-table th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text2);
+    border-bottom: 2px solid var(--border);
+    font-size: 12px;
+  }
+  .guide-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .guide-table tr:last-child td { border-bottom: none; }
+  .guide-table tr:hover td { background: var(--bg); }
+
+  /* ── dB 게이지 ── */
+  .db-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+  }
+  .db-label { width: 80px; font-size: 12px; color: var(--text2); flex-shrink: 0; }
+  .db-bar-wrap {
+    flex: 1;
+    height: 20px;
+    background: var(--surface2);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .db-bar {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+    transition: width 0.6s ease;
+  }
+  .bar-normal { background: var(--teal); }
+  .bar-defect { background: var(--red); }
+  .db-val { font-size: 11px; color: var(--text2); font-family: 'DM Mono', monospace; width: 80px; flex-shrink: 0; }
+
+  /* ── 스텝 ── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    position: relative;
+  }
+  .step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .step-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* ── 체크리스트 ── */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+    transition: all .15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .check-box:hover { border-color: var(--blue); }
+  .check-box.checked {
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+  .check-box.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .check-text { flex: 1; line-height: 1.5; }
+  .check-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  /* ── 알림 박스 ── */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin: 12px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-blue { background: var(--blue-light); color: #1a3a6b; }
+  .alert-amber { background: var(--amber-light); color: #7c3d00; }
+  .alert-green { background: var(--green-light); color: #14532d; }
+  .alert-red { background: var(--red-light); color: #7f1d1d; }
+
+  /* ── 2단 그리드 ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  /* ── 소음 유형 카드 ── */
+  .noise-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .noise-card:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .noise-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .noise-kr { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .noise-check { font-size: 12px; color: var(--text2); }
+  .noise-check span { display: block; padding: 3px 0; }
+  .noise-check span::before { content: '→ '; color: var(--text3); }
+
+  /* ── 반응 탭 ── */
+  .result-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .result-tab {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .result-tab.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+  .result-panel { display: none; }
+  .result-panel.active { display: block; }
+
+  /* ── 진단 결정 트리 ── */
+  .decision {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin: 10px 0;
+  }
+  .decision-q { font-weight: 600; font-size: 14px; margin-bottom: 10px; color: var(--text); }
+  .decision-opts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .decision-opt {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+  }
+  .decision-opt:hover { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+  .decision-opt.yes { border-color: var(--green); }
+  .decision-opt.no { border-color: var(--red); }
+
+  /* ── 빠른 참조 ── */
+  .quick-ref {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 52px; height: 52px;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(26,86,219,0.4);
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+    z-index: 200;
+  }
+  .quick-ref:hover { transform: scale(1.1); }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    width: 480px;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: var(--bg);
+    border: none;
+    border-radius: 6px;
+    width: 28px; height: 28px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+
+  /* ── 태그 ── */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+  .tag-normal { background: var(--teal-light); color: var(--teal); }
+  .tag-defect { background: var(--red-light); color: var(--red); }
+  .tag-caution { background: var(--amber-light); color: var(--amber); }
+
+  /* ── 토스트 ── */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    background: var(--text);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    z-index: 400;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all .3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── 반응형 ── */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 20px; }
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+    .header { padding: 16px 20px; flex-direction: column; gap: 12px; align-items: flex-start; }
+    .header-tabs { flex-wrap: wrap; }
+  }
+
+  .highlight { background: #fef9c3; padding: 1px 4px; border-radius: 3px; }
+  em { font-style: normal; color: var(--blue); font-weight: 600; }
+  strong { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<header class="header">
+  <div class="header-left">
+    <h1>시디즈 소음 응대 가이드</h1>
+    <p>T61 · 2026.03 · CS STANDARD v1.0</p>
+  </div>
+  <div class="header-tabs">
+    <button class="tab-btn active" onclick="switchTab('phone', this)">📞 전화</button>
+    <button class="tab-btn" onclick="switchTab('chat', this)">💬 채팅</button>
+    <button class="tab-btn" onclick="switchTab('edu', this)">📚 교육</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- 사이드바 -->
+
+  <!-- 메인 콘텐츠 -->
+  <main class="main">
+
+    <!-- ====== 전화 섹션 ====== -->
+    <div id="section-phone" class="section active">
+
+      <div class="section-header">
+        <div class="section-icon icon-blue">📞</div>
+        <div class="section-title">
+          <h2>전화 문의 응대 가이드</h2>
+          <p>소리를 직접 들을 수 없으므로 — 질문으로 상황을 그려내는 것이 핵심</p>
+        </div>
+      </div>
+
+      <!-- 소음 유형 -->
+      <div id="noise-type" class="card">
+        <div class="card-title">소음 유형 분류 <span class="badge badge-blue">6가지</span></div>
+        <p style="font-size:13px; color:var(--text2); margin-bottom:14px;">고객 표현을 듣고 아래 유형에 매칭 → 점검 포인트로 바로 연결하세요.</p>
+        <div class="grid3">
+          <div class="noise-card">
+            <div class="noise-type">Click</div>
+            <div class="noise-kr">딸깍 · 래칫 소리</div>
+            <div class="noise-check">
+              <span>래칫부 점검</span>
+              <span>충격 억제 확인</span>
+            </div>
+            <div style="margin-top:8px"><span class="tag tag-caution">단발 접촉, 단발성 고주파</span></div>
+          </div>
+          <div class="noise-card">
+            <div class="noise-type">Squeak</div>
+            <div class="noise-kr">끼익 (고음)</div>
+            <div class="noise-check">
+              <span>마찰계수 확인</span>
+              <span>윤활 · 부싱 점검</span>
+            </div>
+            <div style="margin-top:8px"><span class="tag tag-caution">마찰성 삐걱음</span></div>
+          </div>
+          <div class="noise-card">
+            <div class="noise-type">Rattle</div>
+            <div class="noise-kr">덜컹 · 덜그덕</div>
+            <div class="noise-check">
+              <span>공차 · 체결 확인</span>
+              <span>유격 점검</span>
+            </div>
+            <div style="margin-top:8px"><span class="tag tag-caution">유격성 충돌음</span></div>
+          </div>
+          <div class="noise-card">
+            <div class="noise-type">Creak</div>
+            <div class="noise-kr">삐걱 (저음 · 둔탁)</div>
+            <div class="noise-check">
+              <span>구조 강성 확인</span>
+              <span>프레임 · 체결 점검</span>
+            </div>
+            <div style="margin-top:8px"><span class="tag tag-caution">저주파 반복음</span></div>
+          </div>
+          <div class="noise-card">
+            <div class="noise-type">Scrape</div>
+            <div class="noise-kr">사각 · 서걱</div>
+            <div class="noise-check">
+              <span>표면 거칠기 확인</span>
+              <span>재질 마찰 점검</span>
+            </div>
+            <div style="margin-top:8px"><span class="tag tag-caution">지속적 거친 마찰음</span></div>
+          </div>
+          <div class="noise-card">
+            <div class="noise-type">Chirp</div>
+            <div class="noise-kr">삑 · 찍 (짧게)</div>
+            <div class="noise-check">
+              <span>접촉부 확인</span>
+              <span>부싱 · 와셔 · 스프링</span>
+            </div>
+            <div style="margin-top:8px"><span class="tag tag-caution">짧은 마찰음</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- dB 기준표 -->
+      <div id="db-standard" class="card">
+        <div class="card-title">T61 부위별 정상 작동음 기준 <span class="badge badge-teal">대기음 38.8dB</span></div>
+        <div class="alert alert-blue">
+          <span class="alert-icon">ℹ</span>
+          <span>측정 기준: A-가중치 dB(A), 등가소음 Leq, ISO 소음측정 원칙 준용 / 측정 장소: 시디즈 평택 회의실(CREATIVE)</span>
+        </div>
+        <div style="margin-top:14px">
+          <div class="db-row">
+            <div class="db-label">헤드레스트</div>
+            <div class="db-bar-wrap"><div class="db-bar bar-normal" style="width:55%">39~57</div></div>
+            <div class="db-val">39~57 dB</div>
+          </div>
+          <div class="db-row">
+            <div class="db-label">등판</div>
+            <div class="db-bar-wrap"><div class="db-bar bar-normal" style="width:45%">42~50</div></div>
+            <div class="db-val">42~50 dB</div>
+          </div>
+          <div class="db-row">
+            <div class="db-label">좌판</div>
+            <div class="db-bar-wrap"><div class="db-bar bar-normal" style="width:75%">53~74</div></div>
+            <div class="db-val">53~74 dB</div>
+          </div>
+          <div class="db-row">
+            <div class="db-label">팔걸이</div>
+            <div class="db-bar-wrap"><div class="db-bar bar-normal" style="width:58%">55~61</div></div>
+            <div class="db-val">55~61 dB</div>
+          </div>
+          <div class="db-row">
+            <div class="db-label">틸팅레버</div>
+            <div class="db-bar-wrap"><div class="db-bar bar-normal" style="width:52%">50~60</div></div>
+            <div class="db-val">50~60 dB</div>
+          </div>
+          <div class="db-row">
+            <div class="db-label">캐스터</div>
+            <div class="db-bar-wrap"><div class="db-bar bar-normal" style="width:50%">49~53</div></div>
+            <div class="db-val">49~53 dB</div>
+          </div>
+          <div class="db-row" style="margin-top:8px; border-top:1px dashed var(--border); padding-top:8px">
+            <div class="db-label" style="color:var(--red); font-weight:600">불량 딸깍음</div>
+            <div class="db-bar-wrap"><div class="db-bar bar-defect" style="width:38%">43~47</div></div>
+            <div class="db-val" style="color:var(--red)">43~47 dB ⚠</div>
+          </div>
+        </div>
+        <div class="alert alert-amber" style="margin-top:12px">
+          <span class="alert-icon">⚠</span>
+          <div>
+            <span>시디즈 제품 소음은 일반 가전제품보다 낮거나 비슷한 수준입니다. <strong>단순 작동음(Functional Sound)을 제외한 비정상 소음은 불량으로 판단</strong>하여 관리하세요.</span>
+            <div style="margin-top:8px; padding-top:8px; border-top:1px solid rgba(180,83,9,0.2); font-size:12px; color:var(--amber);">
+              ⚠ 소음 이슈로 문제가 된 제품의 소음 범위는 <strong>43~47dB</strong>입니다. 이 수치는 수치 자체로는 낮아 보이지만, 고객이 사용하는 조용한 환경(공부방·야간 등)에서는 <strong>상대적으로 크게 체감될 확률이 높습니다.</strong> 단순히 "정상 범위"라고 안내하기보다 고객의 사용 환경을 먼저 확인하세요.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 체크리스트 -->
+      <div id="checklist" class="card">
+        <div class="card-title">📋 [참고] 전화 상담 체크리스트</div>
+        <ul class="checklist" id="phone-checklist">
+          <li>
+            <div class="check-box" onclick="toggleCheck(this)"></div>
+            <div class="check-text">
+              <strong>주문번호 / 모델명 확인</strong>
+              <div class="check-sub">접수 내용 확인 → 보증기간 자동 판별 (유상/무상 분기)</div>
+            </div>
+          </li>
+          <li>
+            <div class="check-box" onclick="toggleCheck(this)"></div>
+            <div class="check-text">
+              <strong>소음 발생 시점</strong>
+              <div class="check-sub">앉을 때 / 움직일 때 / 항상 / 간헐적</div>
+            </div>
+          </li>
+          <li>
+            <div class="check-box" onclick="toggleCheck(this)"></div>
+            <div class="check-text">
+              <strong>소음 유형 파악</strong>
+              <div class="check-sub">딸깍(Click) / 끼익(Squeak) / 덜컹(Rattle) / 삐걱(Creak) / 사각(Scrape) / 삑(Chirp)</div>
+            </div>
+          </li>
+          <li>
+            <div class="check-box" onclick="toggleCheck(this)"></div>
+            <div class="check-text">
+              <strong>추정 발생 부위</strong>
+              <div class="check-sub">등받이 / 좌판 / 팔걸이 / 실린더 / 바퀴 / 틸팅레버</div>
+            </div>
+          </li>
+          <li>
+            <div class="check-box" onclick="toggleCheck(this)"></div>
+            <div class="check-text">
+              <strong>사용 환경 확인</strong>
+              <div class="check-sub">바닥 재질(카펫/마루/타일) / 체중 / 하루 사용 시간</div>
+            </div>
+          </li>
+
+          <li>
+            <div class="check-box" onclick="toggleCheck(this)"></div>
+            <div class="check-text">
+              <strong>영상 촬영 요청</strong>
+              <div class="check-sub">소음 발생 동작 촬영 → 카카오톡 또는 이메일 전송 안내</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 안내 스크립트 -->
+      <div id="script" class="card">
+        <div class="card-title">💬 상황별 응대 스크립트 — 전화</div>
+
+        <div class="alert alert-blue" style="margin-bottom:14px">
+          <span class="alert-icon">💡</span>
+          <span>고객에게 dB 수치 직접 언급 자제 — <strong>일상 비교 언어로 번역</strong>하세요. dB는 내부 판단용. "제가 보기에"가 아닌 <strong>"저희 소음 표준 가이드에 따르면"</strong>으로 근거를 명시하고, 판단이 어려우면 <strong>앱 측정 또는 영상</strong>으로 고객이 직접 체감하게 유도하세요.</span>
+        </div>
+
+        <div class="result-tabs">
+          <button class="result-tab active" onclick="switchResultTab(this, 'p-s1')">상황 1. 조절 시 소리</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'p-s2')">상황 2. 조용한 환경</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'p-s3')">상황 3. 이상 소리 의심</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'p-s4')">상황 4. 근거 요구</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'p-s5')">영상 / 앱 측정</button>
+        </div>
+
+        <!-- 상황 1 -->
+        <div id="p-s1" class="result-panel active">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> 헤드레스트·좌판 조절 시 마찰음에 민감하게 반응하는 경우
+          </div>
+          <div class="script-box">
+            <div class="script-label">① 공감</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "고객님, 의자 기능을 조절하실 때 들리는 소리 때문에 놀라셨군요. 충분히 이해합니다."
+          </div>
+          <div class="script-box">
+            <div class="script-label">② 일상 비교로 안내 (dB 수치 언급 X)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "시디즈 제품은 정밀한 부품들이 맞물려 작동하기 때문에 조절 시 일정 수준의 마찰음이 발생할 수 있습니다. 저희 소음 표준 가이드 기준으로, 좌판이나 헤드레스트 조절 시 나는 작동음은 <strong>일상적인 대화 소리나 조용한 사무실 정도의 수준</strong>으로 정상 범위에 해당합니다."
+          </div>
+          <div class="script-box">
+            <div class="script-label">③ 마무리</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "제품 결함이 아니라 기능이 정상적으로 작동하며 발생하는 소리입니다. 그래도 불편하시면 교환·환불 절차도 안내드릴 수 있습니다. 어떻게 도와드릴까요?"
+          </div>
+          <div class="alert alert-green">
+            <span class="alert-icon">✓</span>
+            <span>공감 → 일상 비교 → 선택지 순서를 지키세요. <strong>'소음' 대신 '작동음'·'마찰음'</strong>으로 표현합니다.</span>
+          </div>
+        </div>
+
+        <!-- 상황 2 -->
+        <div id="p-s2" class="result-panel">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> 조용한 집·공부방·야간에 사용하며 작은 소리도 크게 느끼는 경우
+          </div>
+          <div class="script-box">
+            <div class="script-label">① 공감</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "조용한 환경에서 사용하시다 보니 작은 소리도 더 크게 느껴지실 수 있습니다. 충분히 이해합니다."
+          </div>
+          <div class="script-box">
+            <div class="script-label">② 일상 비교 안내 (dB 수치 언급 X)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "저희 제품의 기본 작동음은 <strong>냉장고에서 나는 웅~ 하는 소리</strong>와 비슷한 수준입니다. 평소에는 잘 못 느끼시다가, 주변이 아주 조용해지면 냉장고 소리도 더 크게 들리시는 것처럼, 의자 작동음도 같은 이유로 더 신경 쓰이실 수 있어요."
+          </div>
+          <div class="script-box">
+            <div class="script-label">③ 앱 측정 제안 (고객이 직접 체감)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "혹시 더 직접적으로 확인해 보시고 싶으시다면, 스마트폰 앱으로 간단히 측정해 보실 수 있습니다. <strong>아이폰이시면 건강 앱 → 소음 측정</strong> 기능을, <strong>안드로이드이시면 앱스토어에서 '소음 측정'</strong>을 검색해서 설치하신 후, 의자 옆에 폰을 놓고 동작해 보시겠어요?"
+          </div>
+          <div class="script-box">
+            <div class="script-label">④ 측정값 확인</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "측정값이 나오시면 저한테 말씀해 주세요. 저희 정상 기준과 비교해서 바로 안내드리겠습니다. 수치 자체보다는 '아, 이 정도 소리구나' 하고 직접 느껴보시는 게 제일 정확하거든요."
+          </div>
+          <div class="alert alert-green">
+            <span class="alert-icon">✓</span>
+            <span>앱 측정은 <strong>고객 스스로 체감하게 하는 용도</strong>입니다. 측정 환경마다 오차가 있으니 수치로 판정하지 말고, 고객이 "이 정도구나" 납득하도록 돕는 도구로 활용하세요.</span>
+          </div>
+        </div>
+
+        <!-- 상황 3 -->
+        <div id="p-s3" class="result-panel">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> '딸깍', '덜컹' 등 불량 소음 의심 증상을 호소하는 경우
+          </div>
+          <div class="script-box">
+            <div class="script-label">① 공감</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "말씀하신 소리는 저희가 소음 표준 가이드에서도 주의 깊게 확인하는 부분입니다. 불편드려 죄송합니다."
+          </div>
+          <div class="script-box">
+            <div class="script-label">② 정상/불량 구분 질문</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "정상 작동음은 동작과 함께 일정하게 나지만, 이상 소음은 <strong>예측하기 어렵거나 특정 자세·각도에서만 반복</strong>됩니다. 혹시 소리가 날 때 진동이 함께 느껴지시거나, 특정 방향으로 기울일 때만 나는 편인가요?"
+          </div>
+          <div class="script-box">
+            <div class="script-label">③ 앱 측정 제안 (이상 의심 시)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "지금 바로 확인해 보실 수 있는 방법이 있는데요. 스마트폰에서 소음 측정 앱을 켜시고 <strong>의자 옆에 폰을 놓은 채로 소리가 나는 동작을 해보시겠어요?</strong> 측정값을 알려주시면 저희 기준과 비교해 드릴게요."
+          </div>
+          <div class="script-box red">
+            <div class="script-label">④ 영상 요청 (최종 판단)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "가장 정확한 확인을 위해 소리가 나는 동작을 짧게 영상으로 찍어서 <strong>카카오톡 [시디즈 고객센터]</strong> 또는 <strong>이메일(<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="781b0b380b111c1102561b1715">[email&#160;protected]</a>)</strong>으로 보내주시면, 저희 정상음과 비교 검토 후 AS 접수를 도와드리겠습니다."
+          </div>
+          <div class="alert alert-red">
+            <span class="alert-icon">⚠</span>
+            <span>앱 수치만으로 불량 판정하지 마세요. 영상 확인 후 판단하는 것이 원칙입니다.</span>
+          </div>
+        </div>
+
+        <!-- 상황 4 -->
+        <div id="p-s4" class="result-panel">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> 강한 불만으로 객관적 근거·공식 기준을 요구하는 경우
+          </div>
+          <div class="script-box">
+            <div class="script-label">① 기준 근거 제시</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "네, 고객님. 시디즈는 <strong>ISO 소음 측정 원칙(A-가중치)</strong>을 준수하여 제품별 소음 표준 가이드를 운영하고 있습니다. 제가 개인적으로 판단하는 것이 아니라 이 기준에 근거해서 안내드리고 있습니다."
+          </div>
+          <div class="script-box">
+            <div class="script-label">② 일상 비교로 풀어서 설명</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "T61 기준으로 각 부위 작동음은 <strong>조용한 사무실에서 키보드 치는 소리부터 일상 대화 수준</strong>을 정상 범위로 보고 있습니다. 지금 고객님이 느끼시는 소리가 그 범위 안이라면 기능적 이상으로 보기 어렵습니다."
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">③ 고객 직접 확인 제안</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "제 말씀만으로는 납득이 어려우실 수 있어서, 고객님이 직접 확인하실 수 있는 방법을 안내드릴게요. <strong>스마트폰 소음 측정 앱</strong>(아이폰: 건강 앱 내 소음 측정 / 안드로이드: '소음 측정' 검색)으로 측정해 보시거나, 소리가 나는 동작을 영상으로 보내주시면 저희 기준과 정밀 비교해 드리겠습니다."
+          </div>
+          <div class="alert alert-green">
+            <span class="alert-icon">✓</span>
+            <span>근거 요구 고객에겐 <strong>직접 체감할 수단(앱·영상)</strong>을 제안하는 것이 가장 효과적입니다. "믿으세요"보다 "직접 확인해 보세요"가 훨씬 강합니다.</span>
+          </div>
+        </div>
+
+        <!-- 영상 / 앱 측정 -->
+        <div id="p-s5" class="result-panel">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> 전화만으로 판단이 어려울 때 — 앱 측정 또는 영상 요청
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">앱 측정 안내 — 아이폰</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "아이폰 사용하시면 기본 앱 중에 소음 측정 기능이 있습니다. <strong>건강 앱 → 듣기 → 소음 측정</strong> 순서로 들어가시면 되고요. 의자 옆에 폰을 놓고 소리가 나는 동작을 해보신 후 수치를 알려주시겠어요?"
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">앱 측정 안내 — 안드로이드</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "안드로이드 스마트폰이시면 <strong>플레이스토어에서 '소음 측정' 또는 'Decibel X'</strong>로 검색하시면 무료 앱이 있습니다. 설치하신 후 의자 옆에 폰을 놓고 소리가 나는 동작을 해보시고 수치를 알려주시면 비교해 드릴게요."
+          </div>
+          <div class="script-box">
+            <div class="script-label">앱 측정 결과 확인 후</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "수치 자체가 정확하진 않지만, 저희 정상 기준과 크게 차이가 없다면 안심하셔도 됩니다. 만약 수치가 많이 높게 나오거나 소리가 계속 신경 쓰이신다면 영상도 같이 보내주시면 더 정밀하게 확인해 드릴 수 있어요."
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">영상 요청 안내</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "소리가 나는 동작을 10~20초 정도 촬영해서 <strong>카카오톡 [시디즈 고객센터]</strong> 또는 <strong>이메일(<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="caa9b98ab9a3aea3b0e4a9a5a7">[email&#160;protected]</a>)</strong>으로 보내주시면 빠르게 확인해 드리겠습니다. 촬영 시 소리 나는 부위를 가까이 찍어주시면 더 정확합니다."
+          </div>
+          <div class="alert alert-amber">
+            <span class="alert-icon">⚠</span>
+            <span>앱 측정은 <strong>체감 보조 도구</strong>입니다. 측정 환경(주변 소음·폰 위치·거리)에 따라 오차가 크므로 수치만으로 불량 판정하지 마세요. 최종 판단은 반드시 영상 확인 후 합니다.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 처리 방향 -->
+      <div id="action" class="card">
+        <div class="card-title">⚡ 처리 방향 결정</div>
+        <table class="guide-table">
+          <thead>
+            <tr>
+              <th>상황</th>
+              <th>소음 유형</th>
+              <th>처리 방향</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag tag-normal">정상</span></td>
+              <td>부위별 정상 범위 내</td>
+              <td>정상 작동음 안내 → 추가 문의 시 별도 대응 (수리 / 제품 교체 / 환불)</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-defect">불량</span></td>
+              <td>범위 초과 / 기능 비연동 소음</td>
+              <td>영상 접수 → 부품 교체 또는 교환</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-caution">판단불가</span></td>
+              <td>영상 없음 / 간헐적</td>
+              <td>영상 요청 → 재현 확인 후 결정</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-caution">보증초과</span></td>
+              <td>장기사용 마모</td>
+              <td>유상 수리 견적 안내 → 셀프 점검 가이드</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /section-phone -->
+
+    <!-- ====== 채팅 섹션 ====== -->
+    <div id="section-chat" class="section">
+
+      <div class="section-header">
+        <div class="section-icon icon-teal">💬</div>
+        <div class="section-title">
+          <h2>채팅 문의 응대 가이드</h2>
+          <p>미디어(영상·사진)를 즉시 주고받을 수 있는 채팅만의 강점을 최대한 활용하세요</p>
+        </div>
+      </div>
+
+      <div class="card" id="noise-type">
+        <div class="card-title">채팅 응대 5단계 흐름</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">30초 내 인사 + 주문번호 요청</div>
+              <div class="step-desc">자동 인사 메시지 발송 → 제품 및 구매 정보 확인 → 수리 기간 외 판단</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">소음 상황 텍스트로 파악</div>
+              <div class="step-desc">발생 시점 / 소음 유형 / 추정 부위 — 질문을 하나씩 나눠서 전송 (한꺼번에 길게 보내면 응답률 ↓)</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">영상·사진 첨부 요청 <span class="badge badge-teal">채팅 강점</span></div>
+              <div class="step-desc">소음 발생 동작 영상 → 채팅창에 바로 업로드 요청 / 부위 클로즈업 사진</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-title">미디어 확인 → 정상/불량 판단</div>
+              <div class="step-desc">영상 확인 후 dB 기준표 대조 → 정상 작동음이면 프롬프트 즉시 안내 / 불량이면 처리 방향 결정</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <div class="step-title">처리 안내 + 대화 기록 보관</div>
+              <div class="step-desc">처리 종료 또는 미해결 시 별도 업무 수행</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="db-standard">
+          <div class="card-title">미디어 수신 후 판단 기준</div>
+          <table class="guide-table">
+            <thead><tr><th>부위</th><th>정상 범위</th><th>판정</th></tr></thead>
+            <tbody>
+              <tr><td>헤드레스트</td><td>39~57 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+              <tr><td>등판</td><td>42~50 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+              <tr><td>좌판</td><td>53~74 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+              <tr><td>팔걸이</td><td>55~61 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+              <tr><td>틸팅레버</td><td>50~60 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+              <tr><td>캐스터</td><td>49~53 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+              <tr><td>불량 딸깍</td><td>43~47 dB</td><td><span class="tag tag-defect">불량</span></td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-amber" style="margin-top:12px">
+            <span class="alert-icon">⚠</span>
+            <div>
+              <span>시디즈 제품 소음은 일반 가전제품보다 낮거나 비슷한 수준입니다. <strong>단순 작동음(Functional Sound)을 제외한 비정상 소음은 불량으로 판단</strong>하여 관리하세요.</span>
+              <div style="margin-top:8px; padding-top:8px; border-top:1px solid rgba(180,83,9,0.2); font-size:12px; color:var(--amber);">
+                ⚠ 소음 이슈로 문제가 된 제품의 소음 범위는 <strong>43~47dB</strong>입니다. 이 수치는 수치 자체로는 낮아 보이지만, 고객이 사용하는 조용한 환경(공부방·야간 등)에서는 <strong>상대적으로 크게 체감될 확률이 높습니다.</strong> 단순히 "정상 범위"라고 안내하기보다 고객의 사용 환경을 먼저 확인하세요.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="card" id="checklist">
+          <div class="card-title">채팅 상담사 주의사항</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+            <div class="alert alert-blue" style="margin:0">
+              <span class="alert-icon">💡</span>
+              <div>
+                <strong>질문은 하나씩</strong><br>
+                <span style="font-size:12px">메시지를 나눠 보내야 응답률이 높아집니다.</span>
+              </div>
+            </div>
+            <div class="alert alert-amber" style="margin:0">
+              <span class="alert-icon">⚠</span>
+              <div>
+                <strong>영상 없이 판단 금지</strong><br>
+                <span style="font-size:12px">추정만으로 불량 판정하면 불필요한 교환 발생</span>
+              </div>
+            </div>
+            <div class="alert alert-red" style="margin:0">
+              <span class="alert-icon">🔄</span>
+              <div>
+                <strong>미해결 시 에스컬레이션</strong><br>
+                <span style="font-size:12px">후속 업무 즉시 수행</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="card" id="script">
+        <div class="card-title">💬 상황별 응대 스크립트 — 채팅</div>
+
+        <div class="alert alert-teal" style="background:var(--teal-light); color:#0a4f48; margin-bottom:14px">
+          <span class="alert-icon">💡</span>
+          <span>채팅은 <strong>1~2줄씩 나눠서</strong> 보내세요. dB 수치는 고객에게 직접 언급하지 말고 <strong>일상 비교 언어</strong>로 전달하세요. 판단이 필요할 땐 <strong>앱 측정 → 영상</strong> 순서로 유도합니다.</span>
+        </div>
+
+        <div class="result-tabs">
+          <button class="result-tab active" onclick="switchResultTab(this, 'c-s1')">상황 1. 조절 시 소리</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'c-s2')">상황 2. 조용한 환경</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'c-s3')">상황 3. 이상 소리 의심</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'c-s4')">상황 4. 근거 요구</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'c-s5')">첫 인사 / 영상</button>
+        </div>
+
+        <!-- 채팅 상황 1 -->
+        <div id="c-s1" class="result-panel active">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> 헤드레스트·좌판 조절 시 마찰음에 민감하게 반응하는 경우
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 1 — 공감</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "고객님, 의자 조절 시 들리는 소리 때문에 불편하셨군요. 충분히 이해합니다 😊"
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 2 — 일상 비교 안내 (dB 수치 언급 X)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "저희 소음 표준 가이드 기준으로, 좌판·헤드레스트 조절 시 나는 작동음은 <strong>조용한 사무실에서 키보드 치는 소리나 일상 대화 수준</strong>으로 정상 범위에 해당합니다."
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 3 — 마무리</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "제품 결함이 아닌 정상 작동음이니 안심하고 사용하셔도 됩니다! 혹시 더 궁금하신 점 있으시면 말씀해 주세요 😊"
+          </div>
+          <div class="alert alert-green">
+            <span class="alert-icon">✓</span>
+            <span>dB 수치 대신 <strong>'키보드 소리', '일상 대화 수준'</strong> 등 고객이 바로 상상할 수 있는 표현을 쓰세요.</span>
+          </div>
+        </div>
+
+        <!-- 채팅 상황 2 -->
+        <div id="c-s2" class="result-panel">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> 조용한 집·공부방·야간 사용으로 작은 소리도 크게 느끼는 경우
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 1 — 공감</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "조용한 환경에서 사용하시다 보니 작은 소리도 더 크게 느껴지실 수 있어요. 충분히 이해합니다 😊"
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 2 — 일상 비교 (dB 수치 언급 X)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "저희 제품 작동음은 <strong>냉장고 웅~ 하는 소리</strong>와 비슷한 수준이에요. 평소엔 잘 안 들리다가 주변이 조용해지면 냉장고 소리도 더 크게 들리시는 것처럼, 같은 이유로 더 신경 쓰이실 수 있습니다."
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 3 — 앱 측정 제안 (고객 직접 체감)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "직접 확인해 보시겠어요? 📱 아이폰이시면 <strong>건강 앱 → 소음 측정</strong>, 안드로이드이시면 <strong>플레이스토어에서 '소음 측정' 검색</strong> 후 설치하시고, 의자 옆에 폰 놓고 동작해 보세요!"
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 4 — 측정값 확인</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "수치 나오시면 저한테 보내주시면 저희 기준과 바로 비교해 드릴게요 😊 수치보다 '아 이 정도 소리구나' 직접 느껴보시는 게 제일 정확해요!"
+          </div>
+          <div class="alert alert-green">
+            <span class="alert-icon">✓</span>
+            <span>앱 측정은 수치 판정이 아니라 <strong>고객 스스로 체감하게 돕는 도구</strong>입니다. 오차가 있으므로 수치만으로 판단하지 마세요.</span>
+          </div>
+        </div>
+
+        <!-- 채팅 상황 3 -->
+        <div id="c-s3" class="result-panel">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> '딸깍', '덜컹' 등 불량 소음 의심 증상을 채팅으로 호소하는 경우
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 1 — 공감</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "말씀하신 '딸깍' 소리는 저희가 소음 가이드에서 주의 깊게 확인하는 부분입니다. 불편 드려 죄송해요 😥"
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 2 — 확인 질문</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "혹시 소리가 날 때 <strong>진동이 느껴지거나 특정 각도에서만 반복</strong>되나요? 조금 더 여쭤봐도 될까요?"
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 3 — 앱 측정 제안 (1차 확인)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "지금 바로 확인해 보실 수 있어요! 📱 소음 측정 앱 켜시고 의자 옆에 폰 놓은 채로 소리 나는 동작 해보시겠어요? 측정값 보내주시면 정상 범위인지 바로 알려드릴게요."
+          </div>
+          <div class="script-box red">
+            <div class="script-label">메시지 4 — 영상 요청 (최종 판단)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "가장 정확한 확인을 위해 소리 나는 동작을 10~20초 정도 찍어서 여기 채팅창에 올려주실 수 있을까요? 📹 저희 정상음과 비교해서 AS 접수 여부 바로 안내드릴게요."
+          </div>
+          <div class="script-box red">
+            <div class="script-label">메시지 5 — 영상 확인 후 (이상 소음 판정 시)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "영상 확인 결과, 해당 소음이 <strong>정상 작동음 범위를 벗어난 것으로 판단</strong>됩니다. 부품 교체 또는 교환 처리를 도와드리겠습니다. 아래 링크에서 접수해 주시면 빠르게 처리해 드릴게요 👇 [접수 링크]"
+          </div>
+          <div class="alert alert-red">
+            <span class="alert-icon">⚠</span>
+            <span>앱 수치만으로 불량 판정 금지. <strong>앱 → 영상 순서</strong>로 확인 후 최종 판단하세요.</span>
+          </div>
+        </div>
+
+        <!-- 채팅 상황 4 -->
+        <div id="c-s4" class="result-panel">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> 객관적 근거와 공식 기준을 채팅으로 요구하는 경우
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 1 — 기준 안내</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "네, 고객님! 시디즈는 <strong>ISO 소음 측정 원칙(A-가중치)</strong>을 준수하여 제품별 소음 표준 가이드를 운영하고 있습니다. 제 개인 판단이 아닌 이 기준에 근거해 안내드리는 거예요."
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 2 — 일상 비교로 설명 (dB 수치 언급 X)</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "T61 기준으로 각 부위 작동음은 <strong>조용한 사무실 키보드 소리부터 일상 대화 수준</strong>을 정상으로 보고 있어요. 지금 느끼시는 소리가 그 범위 안이라면 기능 이상으로 보기 어렵습니다."
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">메시지 3 — 직접 확인 제안</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "직접 확인해 보시겠어요? 📱 <strong>소음 측정 앱</strong>으로 측정해 보시거나, 소리 나는 동작 영상 보내주시면 저희 기준과 정밀 비교해 드릴게요 😊"
+          </div>
+          <div class="alert alert-green">
+            <span class="alert-icon">✓</span>
+            <span>근거 요구 고객에겐 <strong>"직접 확인해 보세요"</strong>가 "믿으세요"보다 훨씬 설득력 있습니다. 앱 측정을 적극 권유하세요.</span>
+          </div>
+        </div>
+
+        <!-- 첫 인사 / 영상 -->
+        <div id="c-s5" class="result-panel">
+          <div class="alert alert-amber">
+            <span class="alert-icon">🎯</span>
+            <strong>상황:</strong> 채팅 시작 시 첫 인사 및 영상·앱 측정 안내
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">첫 인사</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "안녕하세요, 시디즈 고객센터입니다 😊 불편을 드려 죄송합니다. 빠르게 도움드리겠습니다. 주문번호를 채팅창에 입력해 주시겠어요?"
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">앱 측정 안내</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "지금 바로 확인해 보실 수 있어요! 📱 아이폰은 <strong>건강 앱 → 소음 측정</strong>, 안드로이드는 <strong>플레이스토어 '소음 측정' 검색</strong> 후 의자 옆에 폰 놓고 동작해 보시고 수치 알려주세요!"
+          </div>
+          <div class="script-box teal">
+            <div class="script-label">영상 요청</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "정확한 확인을 위해 소음이 나는 동작을 10~20초 정도 촬영해서 여기 채팅창에 바로 올려주실 수 있을까요? 📹 소리 나는 부위를 가까이 찍어주시면 더 정확합니다."
+          </div>
+          <div class="script-box">
+            <div class="script-label">영상 확인 후 — 정상 작동음</div>
+            <button class="script-copy" onclick="copyScript(this)">복사</button>
+            "영상 확인했습니다! 해당 작동음은 저희 정상 기준 범위 내에 있어요. <strong>냉장고나 조용한 사무실 키보드 소리 정도</strong>의 수준으로 기기 결함이 아닙니다 😊 혹시 사용 중 불편하시면 말씀해 주세요!"
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card" id="action">
+        <div class="card-title">⚡ 처리 방향 결정</div>
+        <table class="guide-table">
+          <thead>
+            <tr>
+              <th>상황</th>
+              <th>소음 유형</th>
+              <th>처리 방향</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag tag-normal">정상</span></td>
+              <td>부위별 정상 범위 내</td>
+              <td>정상 작동음 안내 → 추가 문의 시 별도 대응 (수리 / 제품 교체 / 환불)</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-defect">불량</span></td>
+              <td>범위 초과 / 기능 비연동 소음</td>
+              <td>영상 접수 → 부품 교체 또는 교환</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-caution">판단불가</span></td>
+              <td>영상 없음 / 간헐적</td>
+              <td>영상 요청 → 재현 확인 후 결정</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-caution">보증초과</span></td>
+              <td>장기사용 마모</td>
+              <td>유상 수리 견적 안내 → 셀프 점검 가이드</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /section-chat -->
+
+    <!-- ====== 교육 섹션 ====== --> -->
+    <div id="section-edu" class="section">
+
+      <div class="section-header">
+        <div class="section-icon icon-purple">📚</div>
+        <div class="section-title">
+          <h2>신규 교육 자료</h2>
+          <p>소음 응대 핵심 개념 — 온보딩 학습 및 롤플레잉 훈련용</p>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card" id="noise-type">
+          <div class="card-title">단순 작동음 vs 불량 소음 구분</div>
+          <table class="guide-table">
+            <thead><tr><th>구분</th><th>작동음 (정상)</th><th>불량 소음</th></tr></thead>
+            <tbody>
+              <tr><td>기능 연동</td><td>✓ 동작과 연동</td><td>✗ 비연동</td></tr>
+              <tr><td>반복 패턴</td><td>동일 패턴 반복</td><td>불규칙·예측 불가</td></tr>
+              <tr><td>지속 시간</td><td>1초 이내</td><td>지속적·반복적</td></tr>
+              <tr><td>고객 인식</td><td>기능 인지에 도움</td><td>불쾌감·품질 저하 인식</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card" id="db-standard">
+          <div class="card-title">소음 수준 체감 비교</div>
+          <table class="guide-table">
+            <thead><tr><th>dB 수준</th><th>일상 환경 예시</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag tag-normal">30~40dB</span></td><td>도서관, 심야 주택가</td></tr>
+              <tr><td><span class="tag tag-normal">40~50dB</span></td><td>조용한 거실, 냉장고 작동음</td></tr>
+              <tr><td><span class="tag tag-caution">50~60dB</span></td><td>일반 대화, 조용한 사무실</td></tr>
+              <tr><td><span class="tag tag-caution">60~70dB</span></td><td>전화벨, 시끄러운 사무실</td></tr>
+              <tr><td><span class="tag tag-defect">70dB~</span></td><td>세탁기, 탈수</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-blue" style="margin-top:12px">
+            <span class="alert-icon">💡</span>
+            <span><strong>시디즈 T61 작동음</strong>은 대부분 <strong>40~74dB 범위</strong>로, 일반 가전제품보다 낮거나 비슷한 수준입니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="checklist">
+        <div class="card-title">📝 롤플레잉 시나리오 — 4가지 상황</div>
+        <div class="result-tabs">
+          <button class="result-tab active" onclick="switchResultTab(this, 'rp1')">상황 1. 조절 시 소리</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'rp2')">상황 2. 조용한 환경</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'rp3')">상황 3. 이상 소리 의심</button>
+          <button class="result-tab" onclick="switchResultTab(this, 'rp4')">상황 4. 근거 요구</button>
+        </div>
+        <div id="rp1" class="result-panel active">
+          <div class="alert alert-amber"><span class="alert-icon">🎭</span><strong>상황 1 — 전화:</strong> "헤드레스트 조절할 때마다 소리가 너무 커요. 불량 아닌가요?"</div>
+          <div class="grid2" style="margin-top:12px">
+            <div>
+              <div style="font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px">▶ 훈련 포인트</div>
+              <ul class="checklist">
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">'소음' 대신 '작동음'으로 표현하기</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">dB 수치 고객에게 직접 언급 자제</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">일상 비교(키보드·대화 소리)로 설명</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">7일 이내라면 교환/환불 옵션 병행 안내</div></li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px">▶ 핵심 멘트</div>
+              <div class="alert alert-green"><span class="alert-icon">✓</span>"저희 소음 표준 가이드 기준으로, 헤드레스트 작동음은 <strong>조용한 사무실 키보드 소리 정도</strong>로 정상 범위입니다."</div>
+            </div>
+          </div>
+        </div>
+        <div id="rp2" class="result-panel">
+          <div class="alert alert-amber"><span class="alert-icon">🎭</span><strong>상황 2 — 채팅:</strong> "밤에 공부할 때 쓰는데, 조금만 움직여도 소리가 신경 쓰여요."</div>
+          <div class="grid2" style="margin-top:12px">
+            <div>
+              <div style="font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px">▶ 훈련 포인트</div>
+              <ul class="checklist">
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">조용한 환경 → 상대적 체감 큰 상황 인식</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">냉장고 소리 비유로 일상 비교</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">앱 측정 제안 → 고객 스스로 체감</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">메시지 짧게 1~2줄씩 나눠서 전송</div></li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px">▶ 핵심 멘트</div>
+              <div class="alert alert-green"><span class="alert-icon">✓</span>"냉장고 웅~ 하는 소리와 비슷한 수준이에요. 📱 소음 측정 앱으로 직접 확인해 보시겠어요? 수치 알려주시면 기준과 비교해 드릴게요."</div>
+            </div>
+          </div>
+        </div>
+        <div id="rp3" class="result-panel">
+          <div class="alert alert-amber"><span class="alert-icon">🎭</span><strong>상황 3 — 전화:</strong> "의자 뒤로 기울일 때 딸깍딸깍 소리가 반복해서 나요."</div>
+          <div class="grid2" style="margin-top:12px">
+            <div>
+              <div style="font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px">▶ 훈련 포인트</div>
+              <ul class="checklist">
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">반복·불규칙 여부 추가 질문</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">앱 측정으로 1차 확인 유도</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">최종 판단은 영상 확인 후</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">앱 수치만으로 불량 판정 금지</div></li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px">▶ 핵심 멘트</div>
+              <div class="alert alert-red"><span class="alert-icon">⚠</span>"소음 측정 앱으로 수치 확인해 주시고, 영상도 보내주시면 저희 정상음과 비교해서 바로 판단해 드릴게요."</div>
+            </div>
+          </div>
+        </div>
+        <div id="rp4" class="result-panel">
+          <div class="alert alert-amber"><span class="alert-icon">🎭</span><strong>상황 4 — 전화:</strong> "정상이라고 하는데 무슨 근거예요? 객관적인 기준이 있나요?"</div>
+          <div class="grid2" style="margin-top:12px">
+            <div>
+              <div style="font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px">▶ 훈련 포인트</div>
+              <ul class="checklist">
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">ISO 소음 측정 원칙 근거 제시</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">일상 비교 언어로 기준 풀어서 설명</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">앱 측정 또는 영상으로 직접 확인 유도</div></li>
+                <li><div class="check-box" onclick="toggleCheck(this)"></div><div class="check-text">"믿으세요" → "직접 확인해 보세요"</div></li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px">▶ 핵심 멘트</div>
+              <div class="alert alert-green"><span class="alert-icon">✓</span>"ISO 기준 소음 가이드에 따른 안내입니다. 직접 확인해 보시겠어요? 📱 소음 측정 앱이나 영상으로 바로 비교해 드릴게요."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="script">
+        <div class="card-title">🚫 하지 말아야 할 응대 vs ✅ 올바른 응대</div>
+        <table class="guide-table">
+          <thead><tr><th>상황</th><th>❌ 잘못된 응대</th><th>✅ 올바른 응대</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>소음 원인 미확인 상태</td>
+              <td>"조립 잘못하신 거 아닌가요?"</td>
+              <td>"먼저 불편함에 대해 죄송합니다. 같이 확인해 볼게요."</td>
+            </tr>
+            <tr>
+              <td>정상음 안내 시</td>
+              <td>"그건 정상이에요." (단답)</td>
+              <td>"측정 결과 정상 범위인 XX dB 수준입니다."</td>
+            </tr>
+            <tr>
+              <td>영상 없이 불량 판정</td>
+              <td>"그건 불량인 것 같네요."</td>
+              <td>"영상을 확인한 후 정확히 판단하겠습니다."</td>
+            </tr>
+            <tr>
+              <td>유상 수리 안내</td>
+              <td>비용 먼저 청구</td>
+              <td>견적 사전 안내 후 고객이 선택</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /section-edu -->
+
+  </main>
+</div>
+
+<!-- 빠른 dB 참조 버튼 -->
+<button class="quick-ref" onclick="openModal()" title="빠른 dB 참조">📊</button>
+
+<!-- dB 참조 모달 -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>T61 빠른 dB 참조표</h3>
+    <div class="alert alert-blue" style="margin-bottom:14px">
+      <span class="alert-icon">ℹ</span>
+      <span>대기 소음: 38.8 dB / 측정: ISO 기준, A-가중치</span>
+    </div>
+    <table class="guide-table">
+      <thead><tr><th>부위</th><th>정상 범위</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>헤드레스트</td><td class="mono">39~57 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+        <tr><td>등판</td><td class="mono">42~50 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+        <tr><td>좌판</td><td class="mono">53~74 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+        <tr><td>팔걸이</td><td class="mono">55~61 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+        <tr><td>틸팅레버</td><td class="mono">50~60 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+        <tr><td>캐스터</td><td class="mono">49~53 dB</td><td><span class="tag tag-normal">정상</span></td></tr>
+        <tr><td style="color:var(--red);font-weight:600">불량 딸깍음</td><td class="mono" style="color:var(--red)">43~47 dB</td><td><span class="tag tag-defect">불량</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px; font-size:12px; color:var(--text3)">
+      ※ 단순 작동음(Functional Sound)을 제외한 비정상 소음은 불량으로 판단<br>
+      ※ 불량 소음 범위(43~47dB)는 수치 자체는 낮으나 조용한 사용 환경에서 고객이 크게 체감할 수 있으므로, 고객의 환경을 먼저 확인하세요.
+    </div>
+  </div>
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast">스크립트가 복사되었습니다!</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // 탭 전환
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + tab).classList.add('active');
+    btn.classList.add('active');
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    const firstNav = document.getElementById('nav-noise-type');
+    if (firstNav) firstNav.classList.add('active');
+  }
+
+  // 결과 탭
+  function switchResultTab(btn, panelId) {
+    const container = btn.closest('.card');
+    container.querySelectorAll('.result-tab').forEach(t => t.classList.remove('active'));
+    container.querySelectorAll('.result-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
+
+  // 섹션 스크롤
+  function scrollToSection(id) {
+    const activeSection = document.querySelector('.section.active');
+    const el = activeSection ? activeSection.querySelector('#' + id) : document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + id);
+    if (navEl) navEl.classList.add('active');
+  }
+
+  // 체크박스
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+  }
+
+  // 스크립트 복사
+  function copyScript(btn) {
+    const box = btn.closest('.script-box');
+    const text = box.innerText.replace('복사', '').replace(/^\s+/,'').trim();
+       navigator.clipboard.writeText(text).catch(() => {});
+    showToast();
+  }
+
+  function showToast() {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  // 모달
+  function openModal() { document.getElementById('modal').classList.add('open'); }
+  function closeModal() { document.getElementById('modal').classList.remove('open'); }
+  function closeModalOutside(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+</script>
+
+</body>
+</html>
